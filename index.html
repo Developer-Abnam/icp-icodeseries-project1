@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoStake | Modern Staking Platform</title>
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6c5ce7;
+            --primary-light: #a29bfe;
+            --secondary: #00cec9;
+            --dark: #0f1225;
+            --darker: #070b1a;
+            --light: #f5f6fa;
+            --gray: #dfe6e9;
+            --text: #b2bec3;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            font-size: 1.75rem;
+            color: var(--primary-light);
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        a {
+            color: var(--primary-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--secondary);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .section {
+            padding: 6rem 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-5 {
+            margin-bottom: 3rem;
+        }
+
+        /* Glass Card Effect */
+        .glass-card {
+            background: rgba(15, 18, 37, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.2);
+        }
+
+        /* Header Styles */
+        header {
+            padding: 1.5rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 11, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--light);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .connect-wallet {
+            margin-left: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 10rem 0 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.2) 0%, rgba(7, 11, 26, 0) 70%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .hero-stats {
+            display: flex;
+            margin-top: 2rem;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--light);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .floating-coin {
+            width: 100%;
+            max-width: 400px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* Staking Dashboard */
+        .staking-dashboard {
+            background: rgba(7, 11, 26, 0.5);
+            padding: 5rem 0;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .staking-card {
+            height: 100%;
+        }
+
+        .staking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .staking-title {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }
+
+        .staking-apy {
+            background: rgba(0, 184, 148, 0.2);
+            color: var(--success);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .range-slider {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .staking-result {
+            background: rgba(108, 92, 231, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .result-label {
+            color: var(--text);
+        }
+
+        .result-value {
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        .total-reward {
+            font-size: 1.5rem;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        /* Coin Info Section */
+        .coin-info {
+            position: relative;
+        }
+
+        .coin-info::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -20%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 206, 201, 0.1) 0%, rgba(7, 11, 26, 0) 70%);
+            z-index: -1;
+        }
+
+        .coin-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .coin-card {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .coin-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: rgba(108, 92, 231, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .coin-icon i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        /* Benefits Section */
+        .benefits {
+            background: rgba(7, 11, 26, 0.5);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-card {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1.5rem;
+            background: rgba(108, 92, 231, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .benefit-icon i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        /* FAQ Section */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .faq-question {
+            background: rgba(15, 18, 37, 0.7);
+            padding: 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(108, 92, 231, 0.1);
+        }
+
+        .faq-question::after {
+            content: '+';
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+
+        .faq-answer {
+            padding: 1.5rem;
+            color: var(--text);
+            border-radius: 0 0 10px 10px;
+            margin-top: 0.5rem;
+            background: rgba(15, 18, 37, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 5rem 0 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-about {
+            max-width: 300px;
+        }
+
+        .footer-heading {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .hero-content, 
+            .dashboard-grid,
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .coin-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            
+            .hero {
+                padding: 8rem 0 4rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .connect-wallet {
+                margin-left: 0;
+            }
+            
+            .section {
+                padding: 4rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Crypto<span>Stake</span></div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#staking">Staking</a></li>
+                    <li><a href="#coins">Coins</a></li>
+                    <li><a href="#benefits">Benefits</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+                <a href="#" class="btn connect-wallet">Connect Wallet</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero section" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Earn Passive Income with Crypto Staking</h1>
+                    <p>Stake your digital assets and earn up to 15% APY with our secure, transparent, and easy-to-use staking platform. Start earning rewards in just a few clicks.</p>
+                    <a href="#staking" class="btn">Start Staking Now</a>
+                    <a href="#learn" class="btn btn-outline" style="margin-left: 1rem;">Learn More</a>
+                    
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">$245M+</div>
+                            <div class="stat-label">Total Value Locked</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">45K+</div>
+                            <div class="stat-label">Active Stakers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">15%</div>
+                            <div class="stat-label">Max APY</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="/placeholder.svg?height=400&width=400" alt="Cryptocurrency Coin" class="floating-coin">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Staking Dashboard -->
+    <section class="staking-dashboard section" id="staking">
+        <div class="container">
+            <h2 class="text-center mb-5">Start Earning Rewards Today</h2>
+            <div class="dashboard-grid">
+                <div class="glass-card staking-card">
+                    <div class="staking-header">
+                        <h3 class="staking-title">Stake Your Coins</h3>
+                        <div class="staking-apy">Up to 15% APY</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Select Coin</label>
+                        <select class="input-field">
+                            <option value="btc">Bitcoin (BTC)</option>
+                            <option value="eth">Ethereum (ETH)</option>
+                            <option value="sol">Solana (SOL)</option>
+                            <option value="ada">Cardano (ADA)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Amount to Stake</label>
+                        <input type="number" class="input-field" placeholder="0.00" min="0">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Staking Period: <span id="months">6</span> months</label>
+                        <input type="range" class="range-slider" min="1" max="12" value="6">
+                    </div>
+                    
+                    <a href="#" class="btn" style="width: 100%;">Stake Now</a>
+                </div>
+                
+                <div class="glass-card staking-card">
+                    <div class="staking-header">
+                        <h3 class="staking-title">Rewards Calculator</h3>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Coin</label>
+                        <select class="input-field">
+                            <option value="btc">Bitcoin (BTC)</option>
+                            <option value="eth">Ethereum (ETH)</option>
+                            <option value="sol">Solana (SOL)</option>
+                            <option value="ada">Cardano (ADA)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Amount</label>
+                        <input type="number" class="input-field" placeholder="0.00" value="1000">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Staking Period: <span id="calc-months">6</span> months</label>
+                        <input type="range" class="range-slider" min="1" max="12" value="6">
+                    </div>
+                    
+                    <div class="staking-result">
+                        <div class="result-row">
+                            <div class="result-label">Staking APY</div>
+                            <div class="result-value">12%</div>
+                        </div>
+                        <div class="result-row">
+                            <div class="result-label">Staking Period</div>
+                            <div class="result-value">6 months</div>
+                        </div>
+                        <div class="result-row">
+                            <div class="result-label">Total Reward</div>
+                            <div class="result-value total-reward">+60.00 USD</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coin Info Section -->
+    <section class="coin-info section" id="coins">
+        <div class="container">
+            <h2 class="text-center mb-5">Supported Coins</h2>
+            <div class="coin-grid">
+                <div class="glass-card coin-card">
+                    <div class="coin-icon">
+                        <img src="/placeholder.svg?height=40&width=40" alt="Bitcoin">
+                    </div>
+                    <h3>Bitcoin (BTC)</h3>
+                    <p>The original cryptocurrency and the largest by market capitalization. Stake BTC and earn up to 6% APY.</p>
+                    <div class="staking-apy">6% APY</div>
+                </div>
+                
+                <div class="glass-card coin-card">
+                    <div class="coin-icon">
+                        <img src="/placeholder.svg?height=40&width=40" alt="Ethereum">
+                    </div>
+                    <h3>Ethereum (ETH)</h3>
+                    <p>The second-largest cryptocurrency by market cap. Stake ETH and earn up to 10% APY.</p>
+                    <div class="staking-apy">10% APY</div>
+                </div>
+                
+                <div class="glass-card coin-card">
+                    <div class="coin-icon">
+                        <img src="/placeholder.svg?height=40&width=40" alt="Solana">
+                    </div>
+                    <h3>Solana (SOL)</h3>
+                    <p>A high-performance blockchain supporting smart contracts. Stake SOL and earn up to 15% APY.</p>
+                    <div class="staking-apy">15% APY</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits section" id="benefits">
+        <div class="container">
+            <h2 class="text-center mb-5">Why Stake With Us</h2>
+            <div class="benefits-grid">
+                <div class="glass-card benefit-card">
+                    <div class="benefit-icon">
+                        <img src="/placeholder.svg?height=30&width=30" alt="Security">
+                    </div>
+                    <h3>Secure Platform</h3>
+                    <p>Our platform employs industry-leading security measures to ensure your assets are safe at all times.</p>
+                </div>
+                
+                <div class="glass-card benefit-card">
+                    <div class="benefit-icon">
+                        <img src="/placeholder.svg?height=30&width=30" alt="High Yields">
+                    </div>
+                    <h3>High Yields</h3>
+                    <p>Earn competitive APY rates on your digital assets, with some coins offering up to 15% returns.</p>
+                </div>
+                
+                <div class="glass-card benefit-card">
+                    <div class="benefit-icon">
+                        <img src="/placeholder.svg?height=30&width=30" alt="No Fees">
+                    </div>
+                    <h3>No Hidden Fees</h3>
+                    <p>We believe in transparency. Stake your coins with no hidden fees or charges.</p>
+                </div>
+                
+                <div class="glass-card benefit-card">
+                    <div class="benefit-icon">
+                        <img src="/placeholder.svg?height=30&width=30" alt="Easy to Use">
+                    </div>
+                    <h3>User-Friendly</h3>
+                    <p>Our intuitive interface makes staking accessible to everyone, from beginners to experienced users.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section" id="faq">
+        <div class="container">
+            <h2 class="text-center mb-5">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">What is cryptocurrency staking?</div>
+                    <div class="faq-answer">
+                        <p>Staking is a way of earning rewards for holding certain cryptocurrencies. When you stake your digital assets, you're essentially locking up your coins to support the operations of a blockchain network, and in return, you receive rewards, typically in the form of additional coins.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">How do I start staking?</div>
+                    <div class="faq-answer">
+                        <p>To start staking, you need to:</p>
+                        <ol>
+                            <li>Connect your wallet to our platform</li>
+                            <li>Select the coin you want to stake</li>
+                            <li>Enter the amount you wish to stake</li>
+                            <li>Choose your staking period</li>
+                            <li>Confirm your staking transaction</li>
+                        </ol>
+                        <p>Once confirmed, your coins will be staked, and you'll start earning rewards based on the APY rate.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Is there a minimum amount required for staking?</div>
+                    <div class="faq-answer">
+                        <p>Yes, the minimum staking amount varies depending on the cryptocurrency. For example:</p>
+                        <ul>
+                            <li>Bitcoin (BTC): 0.01 BTC</li>
+                            <li>Ethereum (ETH): 0.1 ETH</li>
+                            <li>Solana (SOL): 1 SOL</li>
+                        </ul>
+                        <p>These minimums ensure that the rewards earned are meaningful relative to the transaction costs.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Can I unstake my coins before the staking period ends?</div>
+                    <div class="faq-answer">
+                        <p>Yes, you can unstake your coins before the end of the staking period, but there may be an early withdrawal fee. This fee is typically a percentage of the rewards earned, not your principal amount. The specific fee depends on how early you unstake relative to your chosen staking period.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">How are staking rewards calculated?</div>
+                    <div class="faq-answer">
+                        <p>Staking rewards are calculated based on several factors:</p>
+                        <ul>
+                            <li>The amount of cryptocurrency you stake</li>
+                            <li>The staking period you choose</li>
+                            <li>The APY (Annual Percentage Yield) for that specific cryptocurrency</li>
+                            <li>Network conditions and validator performance</li>
+                        </ul>
+                        <p>Our staking calculator provides an estimate of your potential rewards based on current rates.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">Crypto<span>Stake</span></div>
+                    <p>The most secure and user-friendly platform for staking your cryptocurrency and earning passive income.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon">
+                            <img src="/placeholder.svg?height=20&width=20" alt="Twitter">
+                        </a>
+                        <a href="#" class="social-icon">
+                            <img src="/placeholder.svg?height=20&width=20" alt="Discord">
+                        </a>
+                        <a href="#" class="social-icon">
+                            <img src="/placeholder.svg?height=20&width=20" alt="Telegram">
+                        </a>
+                        <a href="#" class="social-icon">
+                            <img src="/placeholder.svg?height=20&width=20" alt="Medium">
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h4 class="footer-heading">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#staking">Staking</a></li>
+                        <li><a href="#coins">Coins</a></li>
+                        <li><a href="#benefits">Benefits</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h4 class="footer-heading">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Whitepaper</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h4 class="footer-heading">Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2024 CryptoStake. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Simple JavaScript for interactive elements -->
+    <script>
+        // Update staking period display
+        const rangeSliders = document.querySelectorAll('.range-slider');
+        
+        rangeSliders.forEach(slider => {
+            slider.addEventListener('input', function() {
+                const monthsDisplay = this.previousElementSibling.querySelector('span');
+                if (monthsDisplay) {
+                    monthsDisplay.textContent = this.value;
+                }
+                
+                // Update calculator results if this is the calculator slider
+                if (this.parentElement.parentElement.querySelector('.staking-result')) {
+                    updateCalculator();
+                }
+            });
+        });
+        
+        // Simple calculator function
+        function updateCalculator() {
+            const amount = parseFloat(document.querySelector('.staking-result').parentElement.querySelector('input[type="number"]').value) || 0;
+            const months = parseInt(document.getElementById('calc-months').textContent);
+            const apy = 0.12; // 12% APY
+            
+            const reward = amount * (apy / 12) * months;
+            document.querySelector('.total-reward').textContent = '+' + reward.toFixed(2) + ' USD';
+        }
+        
+        // Initialize calculator
+        updateCalculator();
+        
+        // FAQ accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                
+                if (answer.style.display === 'block') {
+                    answer.style.display = 'none';
+                    this.style.borderRadius = '10px';
+                    this.style.background = 'rgba(15, 18, 37, 0.7)';
+                    this.style.color = 'var(--light)';
+                    this.textContent = this.textContent.replace('−', '+');
+                } else {
+                    answer.style.display = 'block';
+                    this.style.borderRadius = '10px 10px 0 0';
+                    this.style.background = 'rgba(108, 92, 231, 0.1)';
+                    this.style.color = 'var(--primary-light)';
+                    this.textContent = this.textContent.replace('+', '−');
+                }
+            });
+        });
+        
+        // Hide all FAQ answers initially
+        document.querySelectorAll('.faq-answer').forEach(answer => {
+            answer.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
